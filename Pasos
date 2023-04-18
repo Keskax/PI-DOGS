@@ -1,0 +1,67 @@
+//! 1. crear la base de datos con el nombre de Dogs
+
+//* 2. crear el .env y colocar los datos, de user, pass, y host
+//* 3. crear los modelos de dog
+//*  id, name, peso, altura, img..
+//* 4. crear el modelo de temps
+//*  name, solo se colocar el name por que id se pasa por el Postgres
+
+//! Ahora se relacionan los modelos con la bdd
+// const { Dog, Temperaments } = sequelize.models;
+
+//* 5. ahora se crear la tabla intermedia que relacione los dog y los temperaments
+// Temperaments.belongsToMany(Dog, { through: "Dog_Temperaments" });
+// Dog.belongsToMany(Temperaments, { through: "Dog_Temperaments" });
+
+//! Ahora realizar las rutas
+
+//* 6. en el index crear una ruta general tanto de la bdd como de la api
+
+//* 7. se crea la constante para solicitar la info desde la api por medio de la url
+
+//  const getApiUrl = async = () =>{
+
+//     const apiUrl = await axios.get(`${URL}?api_key=${API_KEY}`)
+//     const apiInfo = await apiUrl.data.map(obj =>{
+//         return{
+//             name: obj.name,
+//             id: obj.id,
+//             etc..
+
+//         }
+//     })
+//          return apiInfo
+
+// }
+
+//* 8 se crea la constante para solicitar la info desde la bdd
+
+// const getDbInfo = async () => {
+//     return await Temperaments.findAll({
+//       include: {
+//         model: Dog,
+//         attributes: ["name"],
+//         through: {
+//           attributes: [],
+//         },
+//       },
+//     });
+//   };
+
+//* 9 Se concatenan
+// const getAllDogs = async () => {
+//     const apiInfo = await getApiInfo();
+//     const dbInfo = await getDbInfo();
+
+//     const infoTotal = apiInfo.concat(dbInfo);
+//     return infoTotal;
+//   };
+
+//* 10 ahora se crean las rutas del .get, se  hace req.query.name debido a que la info no las mandan por medio de un link.... Luego esta se filtra para poder identificar a los perros por el nombre y por el id
+
+// if (name) {
+//     let dogName = await allDogs.filter(
+//       (dg) => dg.name.toLowerCase() === name.toLowerCase()
+//     );
+
+//* 11 Se crea la ruta para los temperaments
