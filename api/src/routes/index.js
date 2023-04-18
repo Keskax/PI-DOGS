@@ -11,11 +11,58 @@ const router = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
+//!info API
+const getApiInfo = async () => {
+  const apiUrl = await axios.get(`${URL}?api_key=${API_KEY}`);
+
+  const apiInfo = await apiUrl.data.map((obj) => {
+    return {
+      id: obj.id,
+      name: obj.name,
+      // weight: obj.weight,
+      weightMin: obj.weightMin,
+      weightMax: obj.weightMax,
+      // height: obj.height,
+      heightMin: obj.heightMin,
+      heightMax: obj.heightMax,
+      // life_span: obj.life_span,
+      life_span_min: obj.life_span_min,
+      life_span_max: obj.life_span_max,
+      temperament: [obj.temperament].map((obj) => obj),
+      img: obj.image.url,
+    };
+  });
+
+  return apiInfo;
+};
+
+//! Info BDD
+const getDbInfo = async () => {
+  return await Temperaments.findAll({
+    include: {
+      model: Dog,
+      attributes: ["name"],
+      through: {
+        attributes: [],
+      },
+    },
+  });
+};
+
+//!Concatenar las dos info
+
+const getAllDogs = async () => {
+  const apiInfo = await getApiInfo();
+  const dbInfo = await getDbInfo();
+  const infoTotal = apiInfo.concat(dbInfo);
+  return infoTotal;
+};
+
 //!Creación de Rutas .get/dogs
 
 router.get("/dogs", async (req, res) => {
   const name = req.query.name;
-  let allDogs = await allDogs();
+  let allDogs = await getAllDogs();
 
   if (name) {
     let dogName = await allDogs.filter((dg) =>
@@ -34,7 +81,7 @@ router.get("/dogs", async (req, res) => {
 
 router.get("/dogs/:id", async (req, res) => {
   const { id } = req.params;
-  const allDogs = await allDogs();
+  const allDogs = await getAllDogs();
 
   if (id) {
     const DogId = allDogs.filter((dog) => dog.id == id);
