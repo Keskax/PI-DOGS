@@ -5,28 +5,29 @@ import style from "./Dog.module.css";
 export default function Dog({
   id,
   name,
-  image,
+  img,
   temperament,
   temperaments,
   weightMin,
   weightMax,
 }) {
   return (
-    <div className={style.container}>
-      <Link to={`/dogs/${id}`} style={{ textDecoration: "none" }}>
-        <div className={style.wrapperImg}>
-          <img className={style.imgDog} src={image} alt={name} />
-        </div>
-        <div className={style.cardText}>
-          <h2 className={style.cardTitle}>{name}</h2>
-
-          <h4 className={style.cardSub}>
-            weight: {weightMin} - {weightMax} Kg
-          </h4>
+    <div className={style.card}>
+      <Link to={`/${id}`}>
+        <img className={style.imagen} src={img} alt="" />
+        <h4 className={style.name}>{name}</h4>
+        <div className={style.contenido}>
           <div>
-            <p className={style.tempWrapper}>
-              {temperaments ? temperaments : temperament}
-            </p>
+            <h4 className={style.cardSub}>
+              Weight: {weightMin} - {weightMax} Kg
+            </h4>
+          </div>
+          <div className={style.temp}>
+            <h5>
+              <p className={style.tempWrapper}>
+                {temperaments ? temperaments : temperament}
+              </p>
+            </h5>
           </div>
         </div>
       </Link>

@@ -1,5 +1,4 @@
-import { GET_TEMPERAMENTS } from "../actionTypes/actionTypes";
-import { GET_DOGS } from "../actionTypes/actionTypes";
+import { GET_DOGS, GET_TEMPERAMENTS } from "../actions/actions";
 
 const initialState = {
   Dogs: [],
