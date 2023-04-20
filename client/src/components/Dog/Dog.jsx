@@ -8,8 +8,9 @@ export default function Dog({
   img,
   temperament,
   temperaments,
-  weightMin,
-  weightMax,
+  weight,
+  weight_min,
+  weight_max,
 }) {
   return (
     <div className={style.card}>
@@ -18,16 +19,10 @@ export default function Dog({
         <h4 className={style.name}>{name}</h4>
         <div className={style.contenido}>
           <div>
-            <h4 className={style.cardSub}>
-              Weight: {weightMin} - {weightMax} Kg
-            </h4>
-          </div>
-          <div className={style.temp}>
             <h5>
-              <p className={style.tempWrapper}>
-                {temperaments ? temperaments : temperament}
-              </p>
+              <u>Weight</u>: {weight_min} - {weight_max} kg.
             </h5>
+            <p className={style}>{temperaments ? temperaments : temperament}</p>
           </div>
         </div>
       </Link>
