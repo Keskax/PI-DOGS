@@ -19,13 +19,9 @@ const getApiInfo = async () => {
     return {
       id: obj.id,
       name: obj.name,
-      // weight: obj.weight,
-      weightMin: obj.weightMin,
-      weightMax: obj.weightMax,
-      // height: obj.height,
-      heightMin: obj.heightMin,
-      heightMax: obj.heightMax,
-      // life_span: obj.life_span,
+      height: obj.height.metric,
+      weight: obj.weight.metric,
+      life_span: obj.life_span,
       life_span_min: obj.life_span_min,
       life_span_max: obj.life_span_max,
       temperament: [obj.temperament].map((obj) => obj),
@@ -38,9 +34,10 @@ const getApiInfo = async () => {
 
 //! Info BDD
 const getDbInfo = async () => {
-  return await Temperaments.findAll({
+  return await Dog.findAll({
+    attributes: ["id", "name", "height", "weight", "life_span", "image"],
     include: {
-      model: Dog,
+      model: Temperaments,
       attributes: ["name"],
       through: {
         attributes: [],
@@ -48,7 +45,6 @@ const getDbInfo = async () => {
     },
   });
 };
-
 //!Concatenar las dos info
 
 const getAllDogs = async () => {
@@ -124,41 +120,42 @@ router.get("/temperaments", async (req, res) => {
 });
 
 router.post("/dogs", async (req, res) => {
-  let {
-    id,
-    name,
-    weight_min,
-    weight_max,
-    height_min,
-    height_max,
-    life_span_min,
-    life_span_max,
-    temperament,
-    img,
-  } = req.body;
+  try {
+    const {
+      name,
+      weight_min,
+      weight_max,
+      height_min,
+      height_max,
+      life_span_min,
+      life_span_max,
+      img,
+      temperament,
+    } = req.body;
 
-  let DogCreate = await Dog.create({
-    id,
-    name,
-    weight_min,
-    weight_max,
+    // Busca los temperamentos en la base de datos y los guarda en un array
+    const temperamentsDB = await Temperaments.findAll({
+      where: { name: temperament },
+    });
 
-    height_min,
-    height_max,
+    // Crea el objeto del nuevo perro con los datos recibidos
+    const newDog = {
+      name,
+      height: `${height_min} - ${height_max}`,
+      weight: `${weight_min} - ${weight_max}`,
+      life_span: `${life_span_min} - ${life_span_max}`,
+      image: img,
+    };
 
-    life_span_min,
-    life_span_max,
-    temperament,
-    img,
-  });
+    // Crea el perro en la base de datos y le asigna los temperamentos
+    const createdDog = await Dog.create(newDog);
+    await createdDog.addTemperaments(temperamentsDB);
 
-  let temperamentDB = await Temperaments.findAll({
-    where: { name: temperament },
-  });
-
-  DogCreate.addTemperament(temperamentDB);
-
-  return res.status(201).send("Se ha creado con éxito");
+    res.status(201).json(createdDog);
+  } catch (err) {
+    console.log("ERROR", err);
+    res.status(404).json({ error: "Internal Server Error" });
+  }
 });
 
 module.exports = router;

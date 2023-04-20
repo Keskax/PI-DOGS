@@ -16,6 +16,7 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
 
     height: {
@@ -28,7 +29,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
 
-    lifeSpan: {
+    life_span: {
       type: DataTypes.STRING,
       allowNull: false,
     },

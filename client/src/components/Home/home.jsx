@@ -10,7 +10,6 @@ export default function Home() {
   const dispatch = useDispatch();
   const allDogs = useSelector((state) => state.dogs);
 
-  //!PAGINADO
   const [currentPage, setCurrentPage] = useState(1);
   const [dogsPerPage, setDogsPerPage] = useState(8);
 
